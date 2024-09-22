@@ -16,8 +16,8 @@ class Headingtext extends StatelessWidget {
 
 
 
-class Detailstext extends StatelessWidget {
-  Detailstext({super.key, required this.text, required this.textColor, required this.alignment});
+class DetailsText extends StatelessWidget {
+  DetailsText({super.key, required this.text, required this.textColor, required this.alignment});
   String text;
   Color textColor;
   TextAlign alignment;

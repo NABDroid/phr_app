@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Components/HeadingText.dart';
+import 'package:phr_app/Screens/RegistrationScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,9 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Form(
-              key: _formKey,
+              key: formKey,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -43,10 +44,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                       child: TextFormField(
-                        controller: _emailController,
+                        controller: emailController,
+                        style: detailsTextStyle,
                         decoration: const InputDecoration(
                           labelText: 'Email',
-                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.black)),
+                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
                           // hintStyle:
                         ),
 
@@ -66,10 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                       child: TextFormField(
-                        controller: _passwordController,
+                        controller: passwordController,
+                        style: detailsTextStyle,
                         decoration: const InputDecoration(
                           labelText: 'Password',
-                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.black)),
+                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
                         ),
                         obscureText: true,
                         validator: (value) {
@@ -92,14 +97,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: themeColorDark
                           ),
                           onPressed: () {
-                            if (_formKey.currentState!.validate()) {
+                            if (formKey.currentState!.validate()) {
                               // Perform login action
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Logging in...')),
                               );
                             }
                           },
-                          child: Headingtext(text: "Login", textColor: textColorDark, alignment: TextAlign.start),
+                          child: DetailsText(text: "Login", textColor: textColorDark, alignment: TextAlign.start),
 
                         ),
                       ),
@@ -111,7 +116,14 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: Detailstext(text: "Don't have an account?", textColor: textColorDark, alignment: TextAlign.center),
+              child: GestureDetector(
+                onTap: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const RegistrationScreen()),
+                  );
+                },
+                child: DetailsText(text: "Don't have an account?", textColor: textColorDark, alignment: TextAlign.center),
+              ),
             ),)
           ],
         ),
