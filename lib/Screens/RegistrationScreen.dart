@@ -18,8 +18,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController reTypeController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  DateTime? selectedDate;
+  DateTime? selectedDOB;
 
   @override
   Widget build(BuildContext context) {
@@ -61,24 +62,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               decoration: InputDecoration(
                                 labelText: 'First Name',
                                 labelStyle: detailsTextStyle,
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 2, color: Colors.black)),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.black)),
                                 // hintStyle:
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return '* Required';
                                 }
                                 return null;
                               },
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Flexible(
@@ -88,17 +89,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Last Name',
                                 labelStyle: detailsTextStyle,
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 2, color: Colors.black)),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.black)),
                                 // hintStyle:
                               ),
                               keyboardType: TextInputType.emailAddress,
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
+                                if (value == null || value.trim().isEmpty) {
                                   return '* Required';
                                 }
                                 return null;
@@ -117,20 +118,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         decoration: InputDecoration(
                           labelText: 'Email',
                           labelStyle: detailsTextStyle,
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 2, color: Colors.black)),
-                          border: OutlineInputBorder(
+                          border: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 1, color: Colors.black)),
                           // hintStyle:
                         ),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
+                          if (value == null || value.trim().isEmpty) {
                             return '* Required';
                           }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                              .hasMatch(value.trim())) {
                             return 'Please enter a valid email';
                           }
                           return null;
@@ -146,24 +148,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             flex: 1,
                             child: TextFormField(
                               controller: dateOfBirthController,
+                              enabled: false,
                               style: detailsTextStyle,
                               decoration: InputDecoration(
                                 labelText: 'Date of birth',
                                 labelStyle: detailsTextStyle,
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 2, color: Colors.black)),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.black)),
                               ),
                               validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '* Required';
+                                try {
+                                  if (value == null || value.isEmpty) {
+                                    return '* Required';
+                                  } else {
+                                    DateTime dob = DateTime.parse(value!);
+                                  }
+                                } catch (e) {
+                                  return 'Date format should be (YYYY-MM-DD)';
                                 }
-                                if (value.length < 6) {
-                                  return 'Date of birth must be at least 6 characters long';
-                                }
+
                                 return null;
                               },
                             ),
@@ -174,7 +181,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             },
                             icon: Icon(
                               Icons.calendar_month,
-                              color: themeColorDark,
+                              color: textColorDark,
                             ),
                           )
                         ],
@@ -196,8 +203,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your password';
                           }
-                          if (value.length < 6) {
-                            return 'Password must be at least 6 characters long';
+                          if (value.trim().length < 6) {
+                            return 'Password must contain at least 6 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: TextFormField(
+                        controller: reTypeController,
+                        style: detailsTextStyle,
+                        decoration: InputDecoration(
+                          labelText: 'Re-Type Password',
+                          labelStyle: detailsTextStyle,
+                          border: const OutlineInputBorder(),
+                        ),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          } else if (value.trim() !=
+                              passwordController.text.trim()) {
+                            return "Password didn't matched";
                           }
                           return null;
                         },
@@ -211,15 +241,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             backgroundColor: themeColorDark),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logging in...')),);
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(content: Text('Logging in...')),
+                            // );
 
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => const MedicalReportForm()),
+                            String userName = firstNameController.text.trim() +
+                                " " +
+                                lastNameController.text.trim();
+                            DateTime userDOB = DateTime.parse(
+                                dateOfBirthController.text.trim());
+                            String email = emailController.text.trim();
+                            String password = passwordController.text.trim();
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => MedicalReportForm(
+                                      userName: userName,
+                                      password: password,
+                                      email: email,
+                                      userDOB: userDOB)),
                             );
-
-
-
-
                           }
                         },
                         child: Padding(
@@ -260,20 +301,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> pickDate(BuildContext context) async {
-    if (selectedDate == null) {
-      selectedDate = DateTime.now();
+    if (selectedDOB == null) {
+      selectedDOB = DateTime.now();
     }
 
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate ?? DateTime.now(),
+      initialDate: selectedDOB ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate)
+    if (picked != null && picked != selectedDOB)
       setState(() {
-        selectedDate = picked;
-        dateOfBirthController.text = selectedDate.toString().split(" ")[0];
+        selectedDOB = picked;
+        dateOfBirthController.text = selectedDOB.toString().split(" ")[0];
       });
   }
 }
