@@ -25,14 +25,10 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
     loadHistoryTitles();
 
     Duration timeDifference = DateTime.now().difference(widget.userDOB);
-    timeDifference.
+
     int years = timeDifference.inDays~/365;
-
-
-
-
-    age = (timeDifference.inDays~/365).toString();
-
+    int months = (timeDifference.inDays - years*365)~/30;
+    age = "$years ${(years>1)?"years":"year"} and $months ${(months>1)?"months":"month"}";
   }
 
 
@@ -40,7 +36,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Stack(
+      body:Stack(
         children: [
           Positioned.fill(
             child: Image(
