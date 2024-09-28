@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phr_app/Models/RegisterDTO.dart';
 
 import '../Components/Global.dart';
 import '../Components/HeadingText.dart';
@@ -17,6 +18,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController contactNoController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController reTypeController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -142,6 +145,56 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     const SizedBox(height: 16),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: TextFormField(
+                        controller: contactNoController,
+                        style: detailsTextStyle,
+                        decoration: InputDecoration(
+                          labelText: 'Contact no',
+                          labelStyle: detailsTextStyle,
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                              BorderSide(width: 2, color: Colors.black)),
+                          border: const OutlineInputBorder(
+                              borderSide:
+                              BorderSide(width: 1, color: Colors.black)),
+                          // hintStyle:
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return '* Required';
+                          }
+                          if (value.length<11) {
+                            return 'at least 11 digits required';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: TextFormField(
+                        controller: addressController,
+                        style: detailsTextStyle,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          labelStyle: detailsTextStyle,
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                              BorderSide(width: 2, color: Colors.black)),
+                          border: const OutlineInputBorder(
+                              borderSide:
+                              BorderSide(width: 1, color: Colors.black)),
+                          // hintStyle:
+                        ),
+                        keyboardType: TextInputType.streetAddress,
+
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                       child: Row(
                         children: [
                           Flexible(
@@ -241,24 +294,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             backgroundColor: themeColorDark),
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //   const SnackBar(content: Text('Logging in...')),
-                            // );
-
-                            String userName = firstNameController.text.trim() +
+                            String fullName = firstNameController.text.trim() +
                                 " " +
                                 lastNameController.text.trim();
                             DateTime userDOB = DateTime.parse(
                                 dateOfBirthController.text.trim());
                             String email = emailController.text.trim();
+                            String contactNo = contactNoController.text.trim();
+                            String address = addressController.text.trim();
                             String password = passwordController.text.trim();
 
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) => MedicalReportForm(
-                                      userName: userName,
+                                      fullName: fullName,
                                       password: password,
                                       email: email,
+                                      contactNo: contactNo,
+                                      address: address,
                                       userDOB: userDOB)),
                             );
                           }

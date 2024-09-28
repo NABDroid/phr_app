@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Positioned.fill(
               child: Image(
                 image: backgroundImage,
-                fit: BoxFit.cover, // Use BoxFit.cover to fill the entire screen
+                fit: BoxFit.cover,
               ),
             ),
             Form(
@@ -50,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: 'Email',
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.black)),
                           border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
-                          // hintStyle:
                         ),
 
                         keyboardType: TextInputType.emailAddress,
@@ -98,7 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              // Perform login action
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Logging in...')),
                               );

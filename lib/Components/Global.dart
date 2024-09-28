@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phr_app/Models/UserInfo.dart';
 
 
 String apiURL = "http://localhost:83";
@@ -15,6 +16,7 @@ String? defaultFont = GoogleFonts.abyssinicaSil().fontFamily;
 TextStyle detailsTextStyle = TextStyle(fontSize: 14, fontFamily: defaultFont);
 TextStyle headingTextStyle = TextStyle(fontSize: 18, fontFamily: defaultFont);
 AssetImage backgroundImage = const AssetImage('asset/background.jpg');
+UserInfo currentUserInfo = UserInfo(userId: 0, isActive: false);
 
 
 //1E201E

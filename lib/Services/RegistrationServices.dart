@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Models/HistoryTitles.dart';
+import 'package:phr_app/Models/MedicalHistory.dart';
+import 'package:phr_app/Models/UserInfo.dart';
+
+import '../Models/RegisterDTO.dart';
 
 class RegistrationServices {
   Future<List<HistoryTitle>> fetchHistoryTitles() async {
@@ -23,28 +27,86 @@ class RegistrationServices {
               isChecked: false);
           titles.add(title);
         }
-      } else {
-        print('Failed to load data');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
+      } else {}
+    } catch (e) {}
 
     return titles;
   }
 
-  Future<bool> register() async {
+  Future<UserInfo> userRegister(RegisterDTO registerDto) async {
+    UserInfo userInfo = UserInfo(userId: 0, isActive: false);
+
     final url = Uri.parse('$apiURL/api/auth/register');
     try {
-      final response = await http.post(url);
+      final body = jsonEncode(registerDto.toJson());
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        final List<dynamic> data = jsonResponse['data'];
+        String message = jsonResponse['message'];
+        if (message == "Registration successful") {
+          userInfo = UserInfo(
+              userId: jsonResponse['data']['userId'],
+              fullName: jsonResponse['data']['fullName'],
+              emailAddress: jsonResponse['data']['emailAddress'],
+              contactNo: jsonResponse['data']['contactNo'],
+              address: jsonResponse['data']['address'],
+              gender:
+                  (jsonResponse['data']['genderId'] == 1) ? "Male" : "Female",
+              dateOfBirth: DateTime.parse(jsonResponse['data']['dateOfBirth']),
+              bloodGroup: jsonResponse['data']['bloodGroup'],
+              fatherName: jsonResponse['data']['fatherName'],
+              motherName: jsonResponse['data']['motherName'],
+              identificationNo: jsonResponse['data']['identificationNo'],
+              identificationTypeId: jsonResponse['data']
+                  ['identificationTypeId'],
+              userType: jsonResponse['data']['userType'],
+              registrationTime:
+                  DateTime.parse(jsonResponse['data']['registrationTime']),
+              isActive: jsonResponse['data']['isActive'],
+              inactiveTime: jsonResponse['data']['inactiveTime']);
+          currentUserInfo = userInfo;
+
+          return userInfo;
+        }
+      } else {}
+    } catch (e) {}
+
+    return userInfo;
+  }
+
+  Future<bool> submitUserHistory(List<MedicalHistory> medicalHistories) async {
+    final url = Uri.parse('$apiURL/api/Patient/submitPatientHistory');
+    try {
+      final body =
+          jsonEncode(medicalHistories.map((user) => user.toJson()).toList());
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        String message = jsonResponse['message'];
+        if (message == "added history!") {
+          return true;
+        }
       } else {
-        print('Failed to load data');
+        return false;
       }
     } catch (e) {
-      print('Error: $e');
+      return false;
     }
 
     return false;
