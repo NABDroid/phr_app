@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             alignment: Alignment.center,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-              child: Headingtext(
+              child: HeadingText(
                 text:
                     "Welcome to \nPersonal Health Record (PHR)\nEco Friendly Medical Surveillance Record App",
                 textColor: textColorDark,
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
-              child: Headingtext(
+              child: HeadingText(
                 text: "Powered by: SAGA UNIVERSITY",
                 textColor: textColorDark,
                 alignment: TextAlign.center,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Components/HeadingText.dart';
+import 'package:phr_app/Screens/HomePage.dart';
 import 'package:phr_app/Screens/RegistrationScreen.dart';
+import 'package:phr_app/Services/AuthServices.dart';
+import '../Models/UserInfo.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -48,10 +51,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: detailsTextStyle,
                         decoration: const InputDecoration(
                           labelText: 'Email',
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.black)),
-                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.black)),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.black)),
                         ),
-
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -72,8 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: detailsTextStyle,
                         decoration: const InputDecoration(
                           labelText: 'Password',
-                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.black)),
-                          border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.black)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.black)),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 1, color: Colors.black)),
                         ),
                         obscureText: true,
                         validator: (value) {
@@ -90,20 +100,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                      child: SizedBox(height: 40,
+                      child: SizedBox(
+                        height: 40,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: themeColorDark
-                          ),
+                              backgroundColor: themeColorDark),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Logging in...')),
-                              );
+                              loginProcess();
                             }
                           },
-                          child: DetailsText(text: "Login", textColor: textColorDark, alignment: TextAlign.start),
-
+                          child: DetailsText(
+                              text: "Login",
+                              textColor: textColorDark,
+                              alignment: TextAlign.start),
                         ),
                       ),
                     ),
@@ -111,21 +121,49 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Align(alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-              child: GestureDetector(
-                onTap: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const RegistrationScreen()),
-                  );
-                },
-                child: DetailsText(text: "Don't have an account?", textColor: textColorDark, alignment: TextAlign.center),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => const RegistrationScreen()),
+                    );
+                  },
+                  child: DetailsText(
+                      text: "Don't have an account?",
+                      textColor: textColorDark,
+                      alignment: TextAlign.center),
+                ),
               ),
-            ),)
+            )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> loginProcess() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Logging in...')),
+    );
+
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    AuthServices loginService = AuthServices();
+
+    UserInfo loginUser = await loginService.userLogin(email, password);
+    if (loginUser.userId > 0) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login successful.')),
+      );
+    }
   }
 }

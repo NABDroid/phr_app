@@ -5,7 +5,7 @@ import 'package:phr_app/Models/HistoryTitles.dart';
 import 'package:phr_app/Models/MedicalHistory.dart';
 import 'package:phr_app/Models/UserInfo.dart';
 import 'package:phr_app/Screens/HomePage.dart';
-import 'package:phr_app/Services/RegistrationServices.dart';
+import 'package:phr_app/Services/AuthServices.dart';
 import '../Components/Global.dart';
 import '../Models/RegisterDTO.dart';
 
@@ -63,10 +63,8 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Headingtext(
+                  const SizedBox(height: 20),
+                  HeadingText(
                       text: "Medical Report Form",
                       textColor: textColorDark,
                       alignment: TextAlign.center),
@@ -77,16 +75,12 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
                       text: "Name: ${widget.fullName}",
                       textColor: textColorDark,
                       alignment: TextAlign.start),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 5),
                   DetailsText(
                       text: "Age: $age",
                       textColor: textColorDark,
                       alignment: TextAlign.start),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       DetailsText(
@@ -124,9 +118,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
                       ))
                     ],
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                  const SizedBox(height: 5),
                   Row(
                     children: [
                       DetailsText(
@@ -159,9 +151,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
                       ))
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: ListView.builder(
                       itemCount: titles.length,
@@ -214,7 +204,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
   }
 
   Future<void> loadHistoryTitles() async {
-    RegistrationServices registrationServices = RegistrationServices();
+    AuthServices registrationServices = AuthServices();
     titles = await registrationServices.fetchHistoryTitles();
     if (titles.length > 0) {
       setState(() {});
@@ -222,7 +212,6 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
   }
 
   Future<void> register() async {
-
     int genderId = 1;
     if (gender == "Female") {
       genderId = 2;
@@ -239,45 +228,37 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
         identificationNo: "",
         identificationTypeId: "",
         password: widget.password);
-    RegistrationServices regService =
-    RegistrationServices();
+    AuthServices regService = AuthServices();
     UserInfo newUser = await regService.userRegister(registerDTO);
     if (newUser.userId > 0) {
       bool isHistoryAdded = false;
-      if(titles.length>0){
+      if (titles.length > 0) {
         List<MedicalHistory> medicalHistories = [];
-        for(int i = 0; i<titles.length; i++){
-          MedicalHistory medicalHistory = MedicalHistory(historyId: 0, userId: newUser.userId, titleId: titles[i].titleId, isTrue: titles[i].isChecked, remarks: "During registration", isActive: true);
+        for (int i = 0; i < titles.length; i++) {
+          MedicalHistory medicalHistory = MedicalHistory(
+              historyId: 0,
+              userId: newUser.userId,
+              titleId: titles[i].titleId,
+              isTrue: titles[i].isChecked,
+              remarks: "During registration",
+              isActive: true);
           medicalHistories.add(medicalHistory);
         }
         isHistoryAdded = await regService.submitUserHistory(medicalHistories);
       }
 
-
-
-
-
-
-      if(isHistoryAdded){
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else {
+      if (!isHistoryAdded) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration successful but failed to save history')),
+          const SnackBar(
+              content:
+              Text('Registration successful but failed to save history')),
         );
         await Future.delayed(const Duration(seconds: 2));
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
       }
 
-
-
-
-
-
-
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
 
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

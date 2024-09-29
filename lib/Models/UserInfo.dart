@@ -1,9 +1,8 @@
 class UserInfo {
   int userId;
-  String? fullName, emailAddress, contactNo, address, gender, bloodGroup, fatherName, motherName, identificationNo, identificationTypeId;
+  String? fullName, emailAddress, contactNo, address, gender, bloodGroup, fatherName, motherName, identificationNo, identificationTypeId, userType;
   DateTime? dateOfBirth, registrationTime, inactiveTime;
-  int? userType;
-  bool isActive;
+  bool? isActive;
 
   UserInfo({
     required this.userId,
@@ -20,7 +19,7 @@ class UserInfo {
     this.identificationTypeId,
     this.userType,
     this.registrationTime,
-    required this.isActive,
+    this.isActive,
     this.inactiveTime,
   });
 }

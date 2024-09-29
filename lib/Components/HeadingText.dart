@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-class Headingtext extends StatelessWidget {
-  Headingtext({super.key, required this.text, required this.textColor, required this.alignment});
+class HeadingText extends StatelessWidget {
+  HeadingText({super.key, required this.text, required this.textColor, required this.alignment});
   String text;
   Color textColor;
   TextAlign alignment;

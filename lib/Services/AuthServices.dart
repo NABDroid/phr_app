@@ -8,7 +8,7 @@ import 'package:phr_app/Models/UserInfo.dart';
 
 import '../Models/RegisterDTO.dart';
 
-class RegistrationServices {
+class AuthServices {
   Future<List<HistoryTitle>> fetchHistoryTitles() async {
     final url = Uri.parse('$apiURL/api/Patient/historyTitles');
     List<HistoryTitle> titles = [];
@@ -31,6 +31,52 @@ class RegistrationServices {
     } catch (e) {}
 
     return titles;
+  }
+
+  Future<UserInfo> userLogin(String email, String password) async {
+    UserInfo userInfo = UserInfo(userId: 0, isActive: false);
+
+    final url =
+        Uri.parse('$apiURL/api/Auth/login?userName=$email&password=$password');
+    try {
+      final response = await http.get(url);
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        String message = jsonResponse['message'];
+        if (message == "Login successful") {
+          userInfo = UserInfo(
+              userId: jsonResponse['data']['userId'],
+              fullName: jsonResponse['data']['fullName'],
+              emailAddress: jsonResponse['data']['emailAddress'],
+              contactNo: jsonResponse['data']['contactNo'],
+              address: jsonResponse['data']['address'],
+              gender:
+                  (jsonResponse['data']['genderId'] == 1) ? "Male" : "Female",
+              dateOfBirth: DateTime.parse(jsonResponse['data']['dateOfBirth']),
+              bloodGroup: jsonResponse['data']['bloodGroup'],
+              fatherName: jsonResponse['data']['fatherName'],
+              motherName: jsonResponse['data']['motherName'],
+              identificationNo: jsonResponse['data']['identificationNo'],
+              identificationTypeId: jsonResponse['data']['identificationTypeId'].toString(),
+              userType: jsonResponse['data']['userType'],
+              registrationTime:
+                  DateTime.parse(jsonResponse['data']['registrationTime']),
+              isActive: jsonResponse['data']['isActive'],
+              inactiveTime: jsonResponse['data']['inactiveTime']);
+          currentUserInfo = userInfo;
+          return userInfo;
+        }
+      } else {
+
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return userInfo;
   }
 
   Future<UserInfo> userRegister(RegisterDTO registerDto) async {
@@ -67,7 +113,7 @@ class RegistrationServices {
               identificationNo: jsonResponse['data']['identificationNo'],
               identificationTypeId: jsonResponse['data']
                   ['identificationTypeId'],
-              userType: jsonResponse['data']['userType'],
+              userType: (jsonResponse['data']['userType'] == 1)?"Patient":"Doctor",
               registrationTime:
                   DateTime.parse(jsonResponse['data']['registrationTime']),
               isActive: jsonResponse['data']['isActive'],

@@ -8,6 +8,7 @@ String apiURL = "http://localhost:83";
 
 Color themeColorDark = const Color(0xff2391BF);
 Color themeColorLite = const Color(0xff697565);
+Color appBackgroundColor = const Color(0xff84bcef);
 Color textColorLite = Colors.white;
 Color textColorDark = Colors.black;
 
