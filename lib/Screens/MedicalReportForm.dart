@@ -4,7 +4,7 @@ import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Models/HistoryTitles.dart';
 import 'package:phr_app/Models/MedicalHistory.dart';
 import 'package:phr_app/Models/UserInfo.dart';
-import 'package:phr_app/Screens/HomePage.dart';
+import 'package:phr_app/Screens/BaseScreen.dart';
 import 'package:phr_app/Services/AuthServices.dart';
 import '../Components/Global.dart';
 import '../Models/RegisterDTO.dart';
@@ -257,7 +257,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
       }
 
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const BaseScreen()),
       );
 
     } else {
