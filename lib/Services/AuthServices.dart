@@ -39,7 +39,10 @@ class AuthServices {
     final url =
         Uri.parse('$apiURL/api/Auth/login?userName=$email&password=$password');
     try {
+      print("===========================================================================");
+      print(url);
       final response = await http.get(url);
+      print("===========================================================================");
       print(response.statusCode);
       print(response.body);
 

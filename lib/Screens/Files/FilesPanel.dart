@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Components/HeadingText.dart';
+import 'package:phr_app/Screens/Files/FilePreview.dart';
 import 'package:phr_app/Services/DocumentsServices.dart';
 
-import '../Models/Document.dart';
+import '../../Models/Document.dart';
 
 class FilesPanel extends StatefulWidget {
   const FilesPanel({super.key});
@@ -27,8 +28,7 @@ class _FilesPanelState extends State<FilesPanel> {
             ),
           ),
           FutureBuilder<List<Document>>(
-            future: documentServices.documentsByUserId(currentUserInfo.userId),
-            // Replace with your actual future method
+            future: documentServices.documentListOfUser(currentUserInfo.userId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -40,23 +40,25 @@ class _FilesPanelState extends State<FilesPanel> {
 
               List<Document> documents = snapshot.data!;
 
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListView.builder(
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: Colors.white10,
-                        elevation: 1,
-                        child: ListTile(
-                          title: HeadingText(text: documents[index].documentTitle!, textColor: textColorDark, alignment: TextAlign.start),
-                          trailing: DetailsText(text: documents[index].docType!, textColor: textColorDark, alignment: TextAlign.start),
-                          subtitle: DetailsText(text: documents[index].documentDescription!, textColor: textColorDark, alignment: TextAlign.start),
-                        ),
-                      );
-                    },
-                  ),
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView.builder(
+                  itemCount: documents.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: Colors.white10,
+                      elevation: 1,
+                      child: ListTile(onTap: (){
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => FilePreview(documentId:  documents[index].documentId!)),
+                        );
+                      },
+                        title: HeadingText(text: documents[index].documentTitle!, textColor: textColorDark, alignment: TextAlign.start),
+                        trailing: DetailsText(text: documents[index].docType!, textColor: textColorDark, alignment: TextAlign.start),
+                        subtitle: DetailsText(text: documents[index].documentDescription!, textColor: textColorDark, alignment: TextAlign.start),
+                      ),
+                    );
+                  },
                 ),
               );
             },

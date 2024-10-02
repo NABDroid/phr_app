@@ -6,7 +6,7 @@ import 'package:phr_app/Screens/ProfilePanel.dart';
 import 'package:phr_app/Screens/SOSPanel.dart';
 
 import '../Components/Global.dart';
-import 'FilesPanel.dart';
+import 'Files/FilesPanel.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});

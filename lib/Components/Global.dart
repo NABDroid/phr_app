@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phr_app/Models/UserInfo.dart';
 
 
-String apiURL = "http://localhost:83";
+String apiURL = "http://192.168.40.182:83";
+// String apiURL = "http://localhost:83";
 
 
 Color themeColorDark = const Color(0xff2391BF);
@@ -20,12 +21,3 @@ AssetImage backgroundImage = const AssetImage('asset/background.jpg');
 UserInfo currentUserInfo = UserInfo(userId: 0, isActive: false);
 
 
-//1E201E
-//3C3D37
-//697565
-//ECDFCC
-
-//16325B
-//227B94
-//78B7D0
-//FFDC7F
