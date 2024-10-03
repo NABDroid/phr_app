@@ -72,8 +72,9 @@ class DocumentServices {
 
         try{
           final Uint8List bytes = base64.decode(data['mainDocument']);
+          print("=========================== bytes");
+          print(bytes);
           await file.writeAsBytes(bytes);
-
           print("===========================");
           print(file.path);
           print(file);
@@ -107,6 +108,40 @@ class DocumentServices {
 
     return document;
   }
+
+
+  Future<void> _uploadDocument(File pdfFile, int userId, String fileName, String description, String fileType, int docTypeId) async {
+    // Convert the PDF to Base64
+    String base64Pdf = await _convertPdfToBase64(pdfFile);
+
+    // Prepare the JSON data
+    List<Map<String, dynamic>> data = [
+      {
+        "userId": userId,
+        "fileName": fileName,
+        "fileDescription": description,
+        "base64File": base64Pdf,
+        "fileType": fileType,
+        "docTypeId": docTypeId,
+      }
+    ];
+
+    // Send the POST request
+    var response = await http.post(
+      Uri.parse('http://localhost:83/api/Global/uploadDocument'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      print('Upload successful');
+    } else {
+      print('Failed to upload: ${response.statusCode}');
+    }
+  }
+
 
 
 

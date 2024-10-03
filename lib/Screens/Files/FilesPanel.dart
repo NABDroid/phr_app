@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Screens/Files/FilePreview.dart';
+import 'package:phr_app/Screens/Files/FileUpload.dart';
 import 'package:phr_app/Services/DocumentsServices.dart';
 
 import '../../Models/Document.dart';
@@ -63,6 +64,17 @@ class _FilesPanelState extends State<FilesPanel> {
               );
             },
           ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ElevatedButton(onPressed: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const FileUpload()),
+                );
+              }, child: DetailsText(text: "Upload file", textColor: textColorDark,)),
+            ),
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(

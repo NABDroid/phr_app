@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:phr_app/Components/Global.dart';
 
 
 class HeadingText extends StatelessWidget {
-  HeadingText({super.key, required this.text, required this.textColor, required this.alignment});
+  HeadingText({super.key, required this.text, required this.textColor, this.alignment});
   String text;
   Color textColor;
-  TextAlign alignment;
+  TextAlign? alignment = TextAlign.start;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +18,10 @@ class HeadingText extends StatelessWidget {
 
 
 class DetailsText extends StatelessWidget {
-  DetailsText({super.key, required this.text, required this.textColor, required this.alignment});
+  DetailsText({super.key, required this.text, this.textColor, this.alignment});
   String text;
-  Color textColor;
-  TextAlign alignment;
+  Color? textColor = textColorDark;
+  TextAlign? alignment = TextAlign.start;
 
   @override
   Widget build(BuildContext context) {

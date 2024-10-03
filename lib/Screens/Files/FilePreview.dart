@@ -42,11 +42,9 @@ class FilePreview extends StatelessWidget {
               }
 
               Document document = snapshot.data!;
-              // File downloadedFile = document.file!;
-              //
-              // print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-              // print(downloadedFile.path);
-              // print(downloadedFile);
+              print("=================================== document.file!.path");
+              print(document.file!.path);
+
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
