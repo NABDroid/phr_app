@@ -31,6 +31,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
   String gender = "Select gender";
   String bloodGroup = "Select blood group";
   String age = "";
+  ValueNotifier<bool> activeSubmitButton = ValueNotifier<bool>(true);
 
   @override
   void initState() {
@@ -179,19 +180,30 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColorDark),
-                      onPressed: () {
-                        register();
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: activeSubmitButton,
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: themeColorDark),
+                          onPressed: (value)?() async {
+                            activeSubmitButton.value = false;
+                            await register();
+                            activeSubmitButton.value = false;
+
+                          }:null,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: (value)?DetailsText(
+                                text: "Submit",
+                                textColor: textColorDark,
+                                alignment: TextAlign.start):DetailsText(
+                                text: "Loading...",
+                                textColor: textColorDark,
+                                alignment: TextAlign.start),
+                          ),
+                        );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: DetailsText(
-                            text: "Submit",
-                            textColor: textColorDark,
-                            alignment: TextAlign.start),
-                      ),
                     ),
                   ),
                 ],

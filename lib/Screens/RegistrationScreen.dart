@@ -325,28 +325,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                          );
+                        },
+                        child: DetailsText(
+                            text: "Already have an account?",
+                            textColor: textColorDark,
+                            alignment: TextAlign.center),
+                      ),
+                    )
+
                   ],
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const LoginScreen()),
-                    );
-                  },
-                  child: DetailsText(
-                      text: "Already have an account?",
-                      textColor: textColorDark,
-                      alignment: TextAlign.center),
-                ),
-              ),
-            )
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: Padding(
+            //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+            //     child: GestureDetector(
+            //       onTap: () {
+            //         Navigator.of(context).push(
+            //           MaterialPageRoute(
+            //               builder: (context) => const LoginScreen()),
+            //         );
+            //       },
+            //       child: DetailsText(
+            //           text: "Already have an account?",
+            //           textColor: textColorDark,
+            //           alignment: TextAlign.center),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

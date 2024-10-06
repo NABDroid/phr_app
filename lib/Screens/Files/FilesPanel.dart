@@ -17,6 +17,7 @@ class FilesPanel extends StatefulWidget {
 class _FilesPanelState extends State<FilesPanel> {
   DocumentServices documentServices = DocumentServices();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,17 +65,6 @@ class _FilesPanelState extends State<FilesPanel> {
               );
             },
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(onPressed: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const FileUpload()),
-                );
-              }, child: DetailsText(text: "Upload file", textColor: textColorDark,)),
-            ),
-          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -83,7 +73,11 @@ class _FilesPanelState extends State<FilesPanel> {
           size: 30,
           color: textColorLite,
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const FileUpload()),
+          );
+        },
         backgroundColor: themeColorDark,
       ),
     );
