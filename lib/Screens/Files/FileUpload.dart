@@ -22,9 +22,10 @@ class _FileUploadState extends State<FileUpload> {
   final picker = ImagePicker();
   TextEditingController fileTitle = TextEditingController();
   TextEditingController fileDescription = TextEditingController();
-  String gender = "Select Type";
+  String fileType = "Select Type";
   DateTime? documentDate;
   List<File> images = [];
+  ValueNotifier<String> buttonText = ValueNotifier<String>("Upload");
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +80,38 @@ class _FileUploadState extends State<FileUpload> {
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(8),
+                      child: DropdownButton<String>(
+                        value: fileType,
+                        isExpanded: true,
+                        items: <String>['Select Type', 'Prescription', 'Report']
+                            .map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: detailsTextStyle,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            fileType = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
                       child: TextFormField(
                         controller: fileDescription,
+                        minLines: 1,
+                        maxLines: 5,
                         style: detailsTextStyle,
                         decoration: const InputDecoration(
                           labelText: 'Description',
@@ -104,66 +135,14 @@ class _FileUploadState extends State<FileUpload> {
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: DropdownButton<String>(
-                        value: gender,
-                        isExpanded: true,
-                        items: <String>['Select Type', 'Prescription', 'Report']
-                            .map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: detailsTextStyle,
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            gender = newValue!;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        pickDate(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Flexible(
-                                child: DetailsText(
-                              text: (documentDate == null)
-                                  ? "Select date"
-                                  : "${documentDate.toString().split(" ")[0]}",
-                            )),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: Icon(
-                                size: 30,
-                                Icons.calendar_month,
-                                color: textColorDark,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Flexible(
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 40) / 2,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigoAccent,
+                      ),
                       onPressed: () async {
                         String message = await pickImage();
                         Fluttertoast.showToast(
@@ -178,27 +157,40 @@ class _FileUploadState extends State<FileUpload> {
                       },
                       child: DetailsText(
                         text: 'Choose Image',
-                        textColor: textColorDark,
+                        textColor: textColorLite,
                       ),
                     ),
                   ),
-                  Flexible(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        String message = await resizeImage(images);
-                        Fluttertoast.showToast(
-                            msg: message,
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 40) / 2,
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: buttonText,
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                          onPressed: (value == "Upload")
+                              ? () async {
+                                  String message = await uploadImage();
+                                  setState(() {});
+                                  buttonText.value = "Upload";
+                                  Fluttertoast.showToast(
+                                      msg: message,
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              : null,
+                          child: DetailsText(
+                            text: value,
+                            textColor: textColorLite,
+                          ),
+                        );
                       },
-                      child: DetailsText(
-                        text: 'Upload',
-                        textColor: textColorDark,
-                      ),
                     ),
                   ),
                 ],
@@ -210,9 +202,9 @@ class _FileUploadState extends State<FileUpload> {
                       child: GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5, // Number of columns
-                          crossAxisSpacing: 4.0, // Spacing between columns
-                          mainAxisSpacing: 4.0, // Spacing between rows
+                          crossAxisCount: 5,
+                          crossAxisSpacing: 4.0,
+                          mainAxisSpacing: 4.0,
                         ),
                         itemCount: images.length,
                         itemBuilder: (context, index) {
@@ -232,7 +224,26 @@ class _FileUploadState extends State<FileUpload> {
     );
   }
 
+  Future<String> uploadImage() async {
+    if (fileType == "Select Type") {
+      return "Select file type";
+    } else if (fileTitle.text.trim() == "") {
+      return "Enter file type";
+    } else if (fileDescription.text.trim() == "") {
+      return "Enter file description";
+    }
+
+    if (images.length > 0) {
+      String message = await resizeImage(images);
+      images.clear();
+      return message;
+    } else {
+      return "No image selected";
+    }
+  }
+
   Future<String> resizeImage(List<File> imageFiles) async {
+    buttonText.value = "Compressing...";
     List<File> resizedImages = [];
 
     for (int i = 0; i < imageFiles.length; i++) {
@@ -257,44 +268,56 @@ class _FileUploadState extends State<FileUpload> {
       String message = await createPdf(resizedImages);
       return message;
     } else {
+      buttonText.value = "Upload";
       return "Failed to resize images";
     }
   }
 
   Future<String> createPdf(List<File> imageFiles) async {
-    final pw.Document pdf = pw.Document();
-    for (int i = 0; i < imageFiles.length; i++) {
-      final image = pw.MemoryImage(imageFiles[i].readAsBytesSync());
-      pdf.addPage(
-        pw.Page(
-          build: (pw.Context context) {
-            return pw.Center(
-              child: pw.Image(image),
-            );
-          },
-        ),
-      );
+    buttonText.value = "Making PDF..";
+    try {
+      final pw.Document pdf = pw.Document();
+      for (int i = 0; i < imageFiles.length; i++) {
+        final image = pw.MemoryImage(imageFiles[i].readAsBytesSync());
+        pdf.addPage(
+          pw.Page(
+            build: (pw.Context context) {
+              return pw.Center(
+                child: pw.Image(image),
+              );
+            },
+          ),
+        );
+      }
+
+      final Directory tempDir = await getTemporaryDirectory();
+      final String pdfPath = path.join(tempDir.path, 'uploadImages.pdf');
+      final File pdfFile = File(pdfPath);
+      DocumentServices docServices = DocumentServices();
+      await pdfFile.writeAsBytes(await pdf.save());
+      int docType = 1;
+      (fileType == "Prescription") ? docType = 1 : docType = 2;
+      buttonText.value = "Uploading file..";
+
+      String apiResponse = await docServices.uploadDocument(
+          pdfFile,
+          currentUserInfo.userId,
+          fileTitle.text.trim(),
+          fileDescription.text.trim(),
+          pdfFile.runtimeType.toString(),
+          docType);
+
+      return apiResponse;
+    } catch (e) {
+      buttonText.value = "Upload";
+      return e.toString();
     }
-
-    final Directory tempDir = await getTemporaryDirectory();
-    final String pdfPath = path.join(tempDir.path, 'uploadImages.pdf');
-    final File pdfFile = File(pdfPath);
-    DocumentServices docServices = DocumentServices();
-    await pdfFile.writeAsBytes(await pdf.save());
-    String apiResponse = await docServices.uploadDocument(
-        pdfFile,
-        currentUserInfo.userId,
-        "First Upload",
-        "First Upload Description",
-        pdfFile.runtimeType.toString(),
-        1);
-
-    return 'PDF saved at: $pdfPath';
   }
 
   Future<String> pickImage() async {
     List<XFile> pickedFiles = await picker.pickMultiImage();
     if (pickedFiles.isNotEmpty) {
+      images.clear();
       for (int i = 0; i < pickedFiles.length; i++) {
         File file = File(pickedFiles[i].path);
         images.add(file);
@@ -303,22 +326,5 @@ class _FileUploadState extends State<FileUpload> {
     } else {
       return 'No image picked';
     }
-  }
-
-  Future<void> pickDate(BuildContext context) async {
-    if (documentDate == null) {
-      documentDate = DateTime.now();
-    }
-
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: documentDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != documentDate)
-      setState(() {
-        documentDate = picked;
-      });
   }
 }

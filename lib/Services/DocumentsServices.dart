@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Models/Document.dart';
 
+import '../Models/Hospital.dart';
+
 class DocumentServices {
 
   Future<List<Document>> documentListOfUser(int userId) async {
@@ -110,31 +112,40 @@ class DocumentServices {
   }
 
   Future<String> uploadDocument(File pdfFile, int userId, String fileName, String description, String fileType, int docTypeId) async {
-    String base64Pdf = await convertPdfToBase64(pdfFile);
+    try{
+      String base64Pdf = await convertPdfToBase64(pdfFile);
+      List<Map<String, dynamic>> data = [
+        {
+          "userId": userId,
+          "fileName": fileName,
+          "fileDescription": description,
+          "base64File": base64Pdf,
+          "fileType": fileType,
+          "docTypeId": docTypeId,
+        }
+      ];
 
-    List<Map<String, dynamic>> data = [
-      {
-        "userId": userId,
-        "fileName": fileName,
-        "fileDescription": description,
-        "base64File": base64Pdf,
-        "fileType": fileType,
-        "docTypeId": docTypeId,
+      var response = await http.post(
+        Uri.parse('$apiURL/api/Global/uploadDocument'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        return 'Upload successful';
+      } else {
+        return 'Failed to upload: ${response.statusCode}';
       }
-    ];
-    var response = await http.post(
-      Uri.parse('$apiURL/api/Global/uploadDocument'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(data),
-    );
-
-    if (response.statusCode == 200) {
-      return 'Upload successful';
-    } else {
-      return 'Failed to upload: ${response.statusCode}';
+    } catch(e) {
+      return e.toString();
     }
+
+
+
+
+
   }
 
   Future<String> convertPdfToBase64(File pdfFile) async {
@@ -142,6 +153,19 @@ class DocumentServices {
     return base64Encode(bytes);
   }
 
+
+  Future<List<Hospital>> fetchHospitals() async {
+    final response = await http.get(
+        Uri.parse('http://localhost:83/api/Global/allHospitals?divisionId=0&districtId=0&unionId=0'));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      List<dynamic> data = jsonData['data'];
+      return data.map((hospital) => Hospital.fromJson(hospital)).toList();
+    } else {
+      throw Exception('Failed to load hospitals');
+    }
+  }
 
 
 
