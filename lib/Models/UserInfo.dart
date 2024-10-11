@@ -1,6 +1,6 @@
 class UserInfo {
   int userId;
-  String? fullName, emailAddress, contactNo, address, gender, bloodGroup, fatherName, motherName, identificationNo, identificationTypeId, userType;
+  String? fullName, emailAddress, contactNo, address, gender, bloodGroup, fatherName, motherName, identificationNo, identificationTypeId, userType, firstSos, secondSos, thirdSos;
   DateTime? dateOfBirth, registrationTime, inactiveTime;
   bool? isActive;
 
@@ -21,5 +21,11 @@ class UserInfo {
     this.registrationTime,
     this.isActive,
     this.inactiveTime,
+    this.firstSos,
+    this.secondSos,
+    this.thirdSos,
   });
 }
+
+
+

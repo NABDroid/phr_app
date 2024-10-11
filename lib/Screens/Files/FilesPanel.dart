@@ -21,6 +21,10 @@ class _FilesPanelState extends State<FilesPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: HeadingText(text: 'Files', textColor: textColorLite,),
+        backgroundColor: themeColorDark,
+      ),
       body: Stack(
         children: [
           Positioned.fill(

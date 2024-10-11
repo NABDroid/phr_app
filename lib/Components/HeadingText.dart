@@ -4,9 +4,9 @@ import 'package:phr_app/Components/Global.dart';
 
 
 class HeadingText extends StatelessWidget {
-  HeadingText({super.key, required this.text, required this.textColor, this.alignment});
+  HeadingText({super.key, required this.text, this.textColor, this.alignment});
   String text;
-  Color textColor;
+  Color? textColor = textColorDark;
   TextAlign? alignment = TextAlign.start;
 
   @override

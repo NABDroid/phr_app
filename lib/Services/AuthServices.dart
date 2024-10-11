@@ -68,6 +68,9 @@ class AuthServices {
               registrationTime:
                   DateTime.parse(jsonResponse['data']['registrationTime']),
               isActive: jsonResponse['data']['isActive'],
+              firstSos: jsonResponse['data']['firstSos'],
+              secondSos: jsonResponse['data']['secondSos'],
+              thirdSos: jsonResponse['data']['thirdSos'],
               inactiveTime: jsonResponse['data']['inactiveTime']);
           currentUserInfo = userInfo;
           return userInfo;

@@ -9,7 +9,6 @@ import 'package:phr_app/Models/Document.dart';
 import '../Models/Hospital.dart';
 
 class DocumentServices {
-
   Future<List<Document>> documentListOfUser(int userId) async {
     final url = Uri.parse('$apiURL/api/Global/documentList?userId=$userId');
     List<Document> documents = [];
@@ -48,7 +47,8 @@ class DocumentServices {
   }
 
   Future<Document> getDocumentById(int documentId) async {
-    final url = Uri.parse('$apiURL/api/Global/getDocumentById?documentId=$documentId');
+    final url =
+        Uri.parse('$apiURL/api/Global/getDocumentById?documentId=$documentId');
     Document document = Document();
 
     // print("..............................url..................................");
@@ -66,13 +66,11 @@ class DocumentServices {
         // print(".......................data.........................................");
         // print(data);
 
-
         final String dir = (await getTemporaryDirectory()).path;
         final String path = '$dir/temp.pdf';
         final File file = File(path);
 
-
-        try{
+        try {
           final Uint8List bytes = base64.decode(data['mainDocument']);
           print("=========================== bytes");
           print(bytes);
@@ -83,13 +81,7 @@ class DocumentServices {
         } catch (e) {
           print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
           print(e);
-
         }
-
-
-
-
-
 
         document = Document(
           documentId: data['documentId'],
@@ -101,18 +93,15 @@ class DocumentServices {
           fileDate: data['fileDate'],
           file: file,
         );
-
-
-
-
       } else {}
     } catch (e) {}
 
     return document;
   }
 
-  Future<String> uploadDocument(File pdfFile, int userId, String fileName, String description, String fileType, int docTypeId) async {
-    try{
+  Future<String> uploadDocument(File pdfFile, int userId, String fileName,
+      String description, String fileType, int docTypeId) async {
+    try {
       String base64Pdf = await convertPdfToBase64(pdfFile);
       List<Map<String, dynamic>> data = [
         {
@@ -138,35 +127,13 @@ class DocumentServices {
       } else {
         return 'Failed to upload: ${response.statusCode}';
       }
-    } catch(e) {
+    } catch (e) {
       return e.toString();
     }
-
-
-
-
-
   }
 
   Future<String> convertPdfToBase64(File pdfFile) async {
     final bytes = await pdfFile.readAsBytes();
     return base64Encode(bytes);
   }
-
-
-  Future<List<Hospital>> fetchHospitals() async {
-    final response = await http.get(
-        Uri.parse('http://localhost:83/api/Global/allHospitals?divisionId=0&districtId=0&unionId=0'));
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      List<dynamic> data = jsonData['data'];
-      return data.map((hospital) => Hospital.fromJson(hospital)).toList();
-    } else {
-      throw Exception('Failed to load hospitals');
-    }
-  }
-
-
-
 }

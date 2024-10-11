@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:phr_app/Models/UserInfo.dart';
 
 
-String apiURL = "http://192.168.40.182:83";
+// String apiURL = "http://192.168.40.182:83";
+String apiURL = "http://192.168.0.107:83";
 // String apiURL = "http://localhost:83";
 
 
