@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../Components/Global.dart';
 import '../Components/HeadingText.dart';
 

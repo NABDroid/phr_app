@@ -50,26 +50,30 @@ class _SOSPanelState extends State<SOSPanel> {
 
     return Scaffold(
       appBar: AppBar(
-        title: HeadingText(text: 'Hospital List', textColor: textColorLite,),
+        title: HeadingText(text: 'Emergency', textColor: textColorLite,),
         backgroundColor: themeColorDark,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: sosNumbers.map((number) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: ElevatedButton(
-                onPressed: () => dialNumber(number),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: themeColorDark,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  textStyle: const TextStyle(fontSize: 20),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: sosNumbers.map((number) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: ElevatedButton(
+                  onPressed: () => dialNumber(number),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: themeColorDark,
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 20),
+                  ),
+                  child: HeadingText(text: 'Call $number', textColor: textColorLite,),
                 ),
-                child: HeadingText(text: 'Call $number', textColor: textColorLite,),
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );

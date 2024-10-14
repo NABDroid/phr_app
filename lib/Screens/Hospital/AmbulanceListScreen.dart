@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:phr_app/Services/HospitalServices.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../Components/Global.dart';
-import '../Components/HeadingText.dart';
-import '../Models/Ambulance.dart';
+import '../../Components/Global.dart';
+import '../../Components/HeadingText.dart';
+import '../../Models/Ambulance.dart';
 
 class AmbulanceList extends StatefulWidget {
   final int hospitalId;
@@ -48,7 +48,7 @@ class _AmbulanceListState extends State<AmbulanceList> {
               itemBuilder: (context, index) {
                 final ambulance = snapshot.data![index];
                 return Card(
-                  color: Colors.white10,
+                  surfaceTintColor: Colors.white,
                   child: ListTile(
                     title: DetailsText(text: ambulance.ambulanceTitle),
                     subtitle: DetailsText(
@@ -60,7 +60,7 @@ class _AmbulanceListState extends State<AmbulanceList> {
                         },
                         child: Icon(
                           Icons.call,
-                          color: Colors.black,
+                          color: Colors.green,
                           size: 30,
                         )),
                   ),

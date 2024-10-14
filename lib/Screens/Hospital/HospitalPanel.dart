@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:phr_app/Components/Global.dart';
 import 'package:phr_app/Components/HeadingText.dart';
-import 'package:phr_app/Screens/AmbulanceListScreen.dart';
-import 'package:phr_app/Services/DocumentsServices.dart';
 import 'package:phr_app/Services/HospitalServices.dart';
 
-import '../Models/Hospital.dart';
+import '../../Models/Hospital.dart';
 import 'HospitalDetailsScreen.dart';
 
 class HospitalPanel extends StatefulWidget {
@@ -47,7 +45,7 @@ class _HospitalPanelState extends State<HospitalPanel> {
                   itemBuilder: (context, index) {
                     final hospital = snapshot.data![index];
                     return Card(
-                      color: Colors.white10,
+                      surfaceTintColor: Colors.white,
                       child: ListTile(
                         onTap: (){
                           Navigator.of(context).push(

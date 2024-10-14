@@ -370,15 +370,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Future<void> pickDate(BuildContext context) async {
-    if (selectedDOB == null) {
-      selectedDOB = DateTime.now();
-    }
+    selectedDOB ??= DateTime.now();
 
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDOB ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
     );
     if (picked != null && picked != selectedDOB)
       setState(() {

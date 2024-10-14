@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:phr_app/Screens/AmbulanceListScreen.dart';
-import 'package:phr_app/Screens/DoctorsListScreen.dart';
+import 'package:phr_app/Screens/Hospital/AmbulanceListScreen.dart';
+import 'package:phr_app/Screens/Hospital/DoctorsListScreen.dart';
 import 'package:phr_app/Services/HospitalServices.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../Components/Global.dart';
-import '../Components/HeadingText.dart';
+import '../../Components/Global.dart';
+import '../../Components/HeadingText.dart';
 
 
 class HospitalDetailsScreen extends StatefulWidget {
@@ -37,10 +38,10 @@ class _HospitalDetailsScreenState extends State<HospitalDetailsScreen> {
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: textColorDark,
           selectedLabelStyle: TextStyle(fontFamily: defaultFont),
-          selectedIconTheme: IconThemeData(color: textColorDark),
+
           unselectedItemColor: themeColorLite,
           unselectedLabelStyle: TextStyle(fontFamily: defaultFont),
-          unselectedIconTheme: IconThemeData(color: themeColorLite),
+
           showUnselectedLabels: true,
           selectedFontSize: 14,
           unselectedFontSize: 10,
@@ -51,13 +52,20 @@ class _HospitalDetailsScreenState extends State<HospitalDetailsScreen> {
           },
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.car_crash_sharp),
-                label: "Ambulances",
-                backgroundColor: appBackgroundColor),
+                icon: SvgPicture.asset(
+                  "asset/ambulanceIcon.svg",
+                  height: currentScreen == 0 ? 30 : 20,
+                  color: currentScreen == 0 ? textColorDark : Colors.grey,
+                ),
+                label: "Ambulances",),
             BottomNavigationBarItem(
-                icon: Icon(Icons.local_hospital),
-                label: "Doctors",
-                backgroundColor: appBackgroundColor)
+                icon: SvgPicture.asset(
+                    "asset/doctorIcon.svg",
+                    height: currentScreen == 1 ? 30 : 20,
+                  color: currentScreen == 1 ? textColorDark : Colors.grey,
+                ),
+                label: "Doctors",),
+
           ],
         ),
       ),

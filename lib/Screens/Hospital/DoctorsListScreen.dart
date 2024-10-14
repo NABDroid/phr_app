@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Services/HospitalServices.dart';
 
-import '../Components/Global.dart';
-import '../Models/DoctorInfo.dart';
+import '../../Components/Global.dart';
+import '../../Models/DoctorInfo.dart';
 
 class DoctorListPage extends StatefulWidget {
   final int hospitalId;
@@ -46,11 +47,14 @@ class _DoctorListPageState extends State<DoctorListPage> {
                 itemCount: doctors.length,
                 itemBuilder: (context, index) {
                   final doctor = doctors[index];
-                  return ListTile(
-                    title: Text(doctor.doctorName),
-                    subtitle: Text('${doctor.achievedDegrees}\n${doctor.chamberAddress}'),
-                    isThreeLine: true,
-                    trailing: Text(doctor.workTimes),
+                  return Card(
+                    surfaceTintColor: Colors.white,
+                    child: ListTile(
+                      title: DetailsText(text:  doctor.doctorName),
+                      subtitle: DetailsText(text: '${doctor.achievedDegrees}\n${doctor.chamberAddress}'),
+                      isThreeLine: true,
+                      trailing: DetailsText(text: doctor.workTimes),
+                    ),
                   );
                 },
               );

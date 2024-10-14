@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Models/HistoryTitles.dart';
 import 'package:phr_app/Models/MedicalHistory.dart';

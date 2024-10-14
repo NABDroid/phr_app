@@ -52,16 +52,16 @@ class _FilesPanelState extends State<FilesPanel> {
                   itemCount: documents.length,
                   itemBuilder: (context, index) {
                     return Card(
-                      color: Colors.white10,
+                      surfaceTintColor: Colors.white,
                       elevation: 1,
                       child: ListTile(onTap: (){
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) => FilePreview(documentId:  documents[index].documentId!)),
                         );
                       },
-                        title: HeadingText(text: documents[index].documentTitle!, textColor: textColorDark, alignment: TextAlign.start),
-                        trailing: DetailsText(text: documents[index].docType!, textColor: textColorDark, alignment: TextAlign.start),
-                        subtitle: DetailsText(text: documents[index].documentDescription!, textColor: textColorDark, alignment: TextAlign.start),
+                        title: DetailsText(text: documents[index].documentTitle!),
+                        // trailing: DetailsText(text: documents[index].docType!),
+                        subtitle: DetailsText(text: "${(documents[index].documentDescription!.length>40)?documents[index].documentDescription!.substring(0,39)+'...':documents[index].documentDescription!}\n${documents[index].docType!}"),
                       ),
                     );
                   },

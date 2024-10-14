@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Screens/HomePanel.dart';
-import 'package:phr_app/Screens/HospitalPanel.dart';
 import 'package:phr_app/Screens/ProfilePanel.dart';
 import 'package:phr_app/Screens/SOSPanel.dart';
-
 import '../Components/Global.dart';
 import 'Files/FilesPanel.dart';
+import 'Hospital/HospitalPanel.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -63,24 +61,19 @@ class _BaseScreenState extends State<BaseScreen> {
           items: [
             BottomNavigationBarItem(
                 icon: const Icon(Icons.home, size: 20),
-                label: "Home",
-                backgroundColor: appBackgroundColor),
+                label: "Home",),
             BottomNavigationBarItem(
                 icon: const Icon(Icons.file_copy_sharp, size: 20),
-                label: "Files",
-                backgroundColor: appBackgroundColor),
+                label: "Files",),
             BottomNavigationBarItem(
                 icon: const Icon(Icons.sos, color: Colors.redAccent, size: 30),
-                label: "Emergency",
-                backgroundColor: appBackgroundColor),
+                label: "Emergency",),
             BottomNavigationBarItem(
                 icon: const Icon(Icons.local_hospital, size: 20),
-                label: "Hospitals",
-                backgroundColor: appBackgroundColor),
+                label: "Hospitals",),
             BottomNavigationBarItem(
                 icon: const Icon(Icons.account_circle, size: 20),
-                label: "Profile",
-                backgroundColor: appBackgroundColor),
+                label: "Profile",),
           ],
         ),
       ),

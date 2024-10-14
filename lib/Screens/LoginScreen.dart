@@ -172,24 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: Padding(
-            //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-            //     child: GestureDetector(
-            //       onTap: () {
-            //         Navigator.of(context).push(
-            //           MaterialPageRoute(
-            //               builder: (context) => const RegistrationScreen()),
-            //         );
-            //       },
-            //       child: DetailsText(
-            //           text: "Don't have an account?",
-            //           textColor: textColorDark,
-            //           alignment: TextAlign.center),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),
