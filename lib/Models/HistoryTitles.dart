@@ -1,5 +1,6 @@
 class HistoryTitle {
   final int titleId;
+  final int? historyId;
   final String title;
   bool isChecked;
 
@@ -7,6 +8,7 @@ class HistoryTitle {
     required this.titleId,
     required this.title,
     required this.isChecked,
+    this.historyId,
   });
 
   factory HistoryTitle.fromJson(Map<String, dynamic> json) {

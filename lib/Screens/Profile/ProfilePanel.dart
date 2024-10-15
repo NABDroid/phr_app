@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phr_app/Models/UserInfo.dart';
+import 'package:phr_app/Screens/Profile/MedicalHistoryScreen.dart';
 import 'package:phr_app/Services/AuthServices.dart';
-import '../Components/Global.dart';
-import '../Components/HeadingText.dart';
+import '../../Components/Global.dart';
+import '../../Components/HeadingText.dart';
 
 class ProfilePanel extends StatefulWidget {
   const ProfilePanel({super.key});
@@ -13,7 +14,7 @@ class ProfilePanel extends StatefulWidget {
 }
 
 class _ProfilePanelState extends State<ProfilePanel> {
-  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController fullNameController = TextEditingController();
   final TextEditingController dateOfBirthController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController contactNoController = TextEditingController();
@@ -30,7 +31,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    firstNameController.text = (currentUserInfo.fullName == null)
+    fullNameController.text = (currentUserInfo.fullName == null)
         ? ""
         : currentUserInfo.fullName.toString();
     dateOfBirthController.text = (currentUserInfo.dateOfBirth == null)
@@ -61,7 +62,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
     // TODO: implement dispose
     super.dispose();
     activeSubmitButton.dispose();
-    firstNameController.dispose();
+    fullNameController.dispose();
     dateOfBirthController.dispose();
     emailController.dispose();
     contactNoController.dispose();
@@ -102,7 +103,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
                   children: [
                     Flexible(
                       child: TextFormField(
-                        controller: firstNameController,
+                        controller: fullNameController,
                         style: detailsTextStyle,
                         decoration: InputDecoration(
                           labelText: 'Name',
@@ -209,6 +210,12 @@ class _ProfilePanelState extends State<ProfilePanel> {
                                   BorderSide(width: 1, color: Colors.black)),
                           // hintStyle:
                         ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return '* Required';
+                          }
+                          return null;
+                        },
                         keyboardType: TextInputType.streetAddress,
                       ),
                     ),
@@ -328,11 +335,17 @@ class _ProfilePanelState extends State<ProfilePanel> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.green),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                    const MedicalHistoryScreen()),
+                              );
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: DetailsText(
-                                text: " Medical Condition",
+                                text: "Medical History",
                                 textColor: textColorDark,
                                 alignment: TextAlign.start,
                                 fSize: 10,
@@ -421,7 +434,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
   }
 
   updateProfile() async {
-    String name = firstNameController.text.trim();
+    String name = fullNameController.text.trim();
     String email = emailController.text.trim();
     String dateOfBirth = dateOfBirthController.text.trim();
     String contactNo = contactNoController.text.trim();

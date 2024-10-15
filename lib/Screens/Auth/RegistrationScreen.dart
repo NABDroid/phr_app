@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phr_app/Models/RegisterDTO.dart';
-
-import '../Components/Global.dart';
-import '../Components/HeadingText.dart';
+import '../../Components/Global.dart';
+import '../../Components/HeadingText.dart';
 import 'LoginScreen.dart';
 import 'MedicalReportForm.dart';
 
@@ -345,24 +343,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
             ),
-            // Align(
-            //   alignment: Alignment.bottomCenter,
-            //   child: Padding(
-            //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-            //     child: GestureDetector(
-            //       onTap: () {
-            //         Navigator.of(context).push(
-            //           MaterialPageRoute(
-            //               builder: (context) => const LoginScreen()),
-            //         );
-            //       },
-            //       child: DetailsText(
-            //           text: "Already have an account?",
-            //           textColor: textColorDark,
-            //           alignment: TextAlign.center),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ),

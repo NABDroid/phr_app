@@ -31,18 +31,41 @@ class AuthServices {
     return titles;
   }
 
+  Future<List<HistoryTitle>> getUserMedicalHistory() async {
+    final url = Uri.parse(
+        '$apiURL/api/Patient/getUserMedicalHistory?userId=${currentUserInfo.userId}');
+    List<HistoryTitle> titles = [];
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        final List<dynamic> data = jsonResponse['data'];
+
+        for (int i = 0; i < data.length; i++) {
+          HistoryTitle title = HistoryTitle(
+              historyId: data[i]['historyId'],
+              titleId: data[i]['titleId'],
+              title: data[i]['title'],
+              isChecked: data[i]['isTrue']);
+          titles.add(title);
+        }
+      } else {}
+    } catch (e) {
+      print(e);
+    }
+
+    return titles;
+  }
+
   Future<UserInfo> userLogin(String email, String password) async {
     UserInfo userInfo = UserInfo(userId: 0, isActive: false);
 
     final url =
         Uri.parse('$apiURL/api/Auth/login?userName=$email&password=$password');
     try {
-      print("===========================================================================");
-      print(url);
       final response = await http.get(url);
-      print("===========================================================================");
-      print(response.statusCode);
-      print(response.body);
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -52,7 +75,7 @@ class AuthServices {
               userId: jsonResponse['data']['userId'],
               fullName: jsonResponse['data']['fullName'],
               emailAddress: jsonResponse['data']['emailAddress'],
-              contactNo: jsonResponse['data']['contactNo'],
+              contactNo: jsonResponse['data']['contctNo'],
               address: jsonResponse['data']['address'],
               gender:
                   (jsonResponse['data']['genderId'] == 1) ? "Male" : "Female",
@@ -61,7 +84,8 @@ class AuthServices {
               fatherName: jsonResponse['data']['fatherName'],
               motherName: jsonResponse['data']['motherName'],
               identificationNo: jsonResponse['data']['identificationNo'],
-              identificationTypeId: jsonResponse['data']['identificationTypeId'].toString(),
+              identificationTypeId:
+                  jsonResponse['data']['identificationTypeId'].toString(),
               userType: jsonResponse['data']['userType'],
               registrationTime:
                   DateTime.parse(jsonResponse['data']['registrationTime']),
@@ -73,12 +97,8 @@ class AuthServices {
           currentUserInfo = userInfo;
           return userInfo;
         }
-      } else {
-
-      }
-    } catch (e) {
-      print(e);
-    }
+      } else {}
+    } catch (e) {}
 
     return userInfo;
   }
@@ -117,7 +137,9 @@ class AuthServices {
               identificationNo: jsonResponse['data']['identificationNo'],
               identificationTypeId: jsonResponse['data']
                   ['identificationTypeId'],
-              userType: (jsonResponse['data']['userType'] == 1)?"Patient":"Doctor",
+              userType: (jsonResponse['data']['userType'] == 1)
+                  ? "Patient"
+                  : "Doctor",
               registrationTime:
                   DateTime.parse(jsonResponse['data']['registrationTime']),
               isActive: jsonResponse['data']['isActive'],
@@ -162,18 +184,21 @@ class AuthServices {
     return false;
   }
 
-  Future<UserInfo> updateProfile(String? name, String? email, String? contactNo, String? address, String? firstSOS, String? secondSOS, String? thirdSOS, String? dateOfBirth) async {
+  Future<UserInfo> updateProfile(
+      String? name,
+      String? email,
+      String? contactNo,
+      String? address,
+      String? firstSOS,
+      String? secondSOS,
+      String? thirdSOS,
+      String? dateOfBirth) async {
     UserInfo userInfo = UserInfo(userId: 0, isActive: false);
 
-    final url =
-    Uri.parse('$apiURL/api/Patient/updateProfile?userId=${currentUserInfo.userId}&name=$name&email=$email&contactNo=$contactNo&address=$address&firstSOS=$firstSOS&secondSOS=$secondSOS&thirdSOS=$thirdSOS&dateOfBirth=$dateOfBirth');
+    final url = Uri.parse(
+        '$apiURL/api/Patient/updateProfile?userId=${currentUserInfo.userId}&name=$name&email=$email&contactNo=$contactNo&address=$address&firstSOS=$firstSOS&secondSOS=$secondSOS&thirdSOS=$thirdSOS&dateOfBirth=$dateOfBirth');
     try {
-
       final response = await http.get(url);
-      print(response.body);
-      print(response.statusCode);
-      print("======================================================");
-
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
@@ -183,19 +208,20 @@ class AuthServices {
               userId: jsonResponse['data']['userId'],
               fullName: jsonResponse['data']['fullName'],
               emailAddress: jsonResponse['data']['emailAddress'],
-              contactNo: jsonResponse['data']['contactNo'],
+              contactNo: jsonResponse['data']['contctNo'],
               address: jsonResponse['data']['address'],
               gender:
-              (jsonResponse['data']['genderId'] == 1) ? "Male" : "Female",
+                  (jsonResponse['data']['genderId'] == 1) ? "Male" : "Female",
               dateOfBirth: DateTime.parse(jsonResponse['data']['dateOfBirth']),
               bloodGroup: jsonResponse['data']['bloodGroup'],
               fatherName: jsonResponse['data']['fatherName'],
               motherName: jsonResponse['data']['motherName'],
               identificationNo: jsonResponse['data']['identificationNo'],
-              identificationTypeId: jsonResponse['data']['identificationTypeId'].toString(),
+              identificationTypeId:
+                  jsonResponse['data']['identificationTypeId'].toString(),
               userType: jsonResponse['data']['userType'],
               registrationTime:
-              DateTime.parse(jsonResponse['data']['registrationTime']),
+                  DateTime.parse(jsonResponse['data']['registrationTime']),
               isActive: jsonResponse['data']['isActive'],
               firstSos: jsonResponse['data']['firstSos'],
               secondSos: jsonResponse['data']['secondSos'],
@@ -204,12 +230,8 @@ class AuthServices {
           currentUserInfo = userInfo;
           return userInfo;
         }
-      } else {
-
-      }
-    } catch (e) {
-      print(e);
-    }
+      } else {}
+    } catch (e) {}
 
     return userInfo;
   }

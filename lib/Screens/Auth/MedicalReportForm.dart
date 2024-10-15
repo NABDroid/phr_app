@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phr_app/Components/HeadingText.dart';
 import 'package:phr_app/Models/HistoryTitles.dart';
 import 'package:phr_app/Models/MedicalHistory.dart';
 import 'package:phr_app/Models/UserInfo.dart';
 import 'package:phr_app/Screens/BaseScreen.dart';
 import 'package:phr_app/Services/AuthServices.dart';
-import '../Components/Global.dart';
-import '../Models/RegisterDTO.dart';
+import '../../Components/Global.dart';
+import '../../Models/RegisterDTO.dart';
 
 class MedicalReportForm extends StatefulWidget {
   MedicalReportForm(
@@ -49,7 +50,10 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: HeadingText(text: 'Medical Report Form', textColor: textColorLite,),
+          backgroundColor: themeColorDark,
+        ),
         body: Stack(
           children: [
             Positioned.fill(
@@ -64,10 +68,10 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 20),
-                  HeadingText(
-                      text: "Medical Report Form",
-                      textColor: textColorDark,
-                      alignment: TextAlign.center),
+                  // HeadingText(
+                  //     text: "Medical Report Form",
+                  //     textColor: textColorDark,
+                  //     alignment: TextAlign.center),
                   const SizedBox(
                     height: 10,
                   ),
@@ -259,12 +263,15 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
       }
 
       if (!isHistoryAdded) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content:
-              Text('Registration successful but failed to save history')),
-        );
-        await Future.delayed(const Duration(seconds: 2));
+        Fluttertoast.showToast(
+            msg: 'Registration successful but failed to save history',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green,
+            textColor: Colors.white,
+            fontSize: 16.0);
+
       }
 
       Navigator.of(context).pushReplacement(
@@ -272,9 +279,18 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
       );
 
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Registration failed')),
-      );
+
+      Fluttertoast.showToast(
+          msg: 'Registration failed',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white,
+          fontSize: 16.0);
+
+
+
     }
   }
 }

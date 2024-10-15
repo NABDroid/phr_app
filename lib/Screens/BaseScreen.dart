@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phr_app/Screens/HomePanel.dart';
-import 'package:phr_app/Screens/ProfilePanel.dart';
+import 'package:phr_app/Screens/Profile/ProfilePanel.dart';
 import 'package:phr_app/Screens/SOSPanel.dart';
 import '../Components/Global.dart';
 import 'Files/FilesPanel.dart';
