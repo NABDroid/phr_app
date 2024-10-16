@@ -82,334 +82,339 @@ class _ProfilePanelState extends State<ProfilePanel> {
             fit: BoxFit.cover,
           ),
         ),
-        Form(
-          key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Image(
-                  height: 100,
-                  image: AssetImage('asset/userPhoto.png'),
-                ),
-              ),
-              const SizedBox(height: 30),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        controller: fullNameController,
-                        style: detailsTextStyle,
-                        decoration: InputDecoration(
-                          labelText: 'Name',
-                          labelStyle: detailsTextStyle,
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.black)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black)),
-                          // hintStyle:
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return '* Required';
-                          }
-                          return null;
-                        },
-                      ),
+        SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                    child: Image(
+                      height: 100,
+                      image: AssetImage('asset/userPhoto.png'),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: TextFormField(
-                        controller: emailController,
-                        style: detailsTextStyle,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: detailsTextStyle,
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.black)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black)),
-                          // hintStyle:
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return '* Required';
-                          }
-                          if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                              .hasMatch(value.trim())) {
-                            return 'Please enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: TextFormField(
-                        controller: contactNoController,
-                        style: detailsTextStyle,
-                        decoration: InputDecoration(
-                          labelText: 'Contact no',
-                          labelStyle: detailsTextStyle,
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.black)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black)),
-                          // hintStyle:
-                        ),
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return '* Required';
-                          }
-                          if (value.length < 11) {
-                            return 'at least 11 digits required';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Flexible(
-                      child: TextFormField(
-                        controller: addressController,
-                        style: detailsTextStyle,
-                        decoration: InputDecoration(
-                          labelText: 'Address',
-                          labelStyle: detailsTextStyle,
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.black)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black)),
-                          // hintStyle:
-                        ),
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return '* Required';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.streetAddress,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: Row(
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: TextFormField(
-                        controller: dateOfBirthController,
-                        enabled: false,
-                        style: detailsTextStyle,
-                        decoration: InputDecoration(
-                          labelText: 'Date of birth',
-                          labelStyle: detailsTextStyle,
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.black)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.black)),
-                        ),
-                        validator: (value) {
-                          try {
-                            if (value == null || value.isEmpty) {
-                              return '* Required';
-                            } else {
-                              DateTime dob = DateTime.parse(value!);
-                            }
-                          } catch (e) {
-                            return 'Date format should be (YYYY-MM-DD)';
-                          }
-
-                          return null;
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        pickDate(context);
-                      },
-                      icon: Icon(
-                        Icons.calendar_month,
-                        color: textColorDark,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          controller: firstSOS,
-                          style: detailsTextStyle,
-                          decoration: InputDecoration(
-                            labelText: 'First SOS',
-                            labelStyle: detailsTextStyle,
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Flexible(
-                        child: TextFormField(
-                          controller: secondSOS,
-                          style: detailsTextStyle,
-                          decoration: InputDecoration(
-                            labelText: 'Second SOS',
-                            labelStyle: detailsTextStyle,
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 16),
-              Padding(
-                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: TextFormField(
-                          controller: thirdSOS,
-                          style: detailsTextStyle,
-                          decoration: InputDecoration(
-                            labelText: 'Third SOS',
-                            labelStyle: detailsTextStyle,
-                            border: const OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Flexible(
-                        child: Center(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                    const MedicalHistoryScreen()),
-                              );
+                  ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: TextFormField(
+                            controller: fullNameController,
+                            style: detailsTextStyle,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: detailsTextStyle,
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 2, color: Colors.black)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.black)),
+                              // hintStyle:
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return '* Required';
+                              }
+                              return null;
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: DetailsText(
-                                text: "Medical History",
-                                textColor: textColorDark,
-                                alignment: TextAlign.start,
-                                fSize: 10,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Flexible(
+                          child: TextFormField(
+                            controller: emailController,
+                            style: detailsTextStyle,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              labelStyle: detailsTextStyle,
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 2, color: Colors.black)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.black)),
+                              // hintStyle:
+                            ),
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return '* Required';
+                              }
+                              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value.trim())) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: TextFormField(
+                            controller: contactNoController,
+                            style: detailsTextStyle,
+                            decoration: InputDecoration(
+                              labelText: 'Contact no',
+                              labelStyle: detailsTextStyle,
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 2, color: Colors.black)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.black)),
+                              // hintStyle:
+                            ),
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return '* Required';
+                              }
+                              if (value.length < 11) {
+                                return 'at least 11 digits required';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Flexible(
+                          child: TextFormField(
+                            controller: addressController,
+                            style: detailsTextStyle,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              labelStyle: detailsTextStyle,
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 2, color: Colors.black)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.black)),
+                              // hintStyle:
+                            ),
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return '* Required';
+                              }
+                              return null;
+                            },
+                            keyboardType: TextInputType.streetAddress,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: Row(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: TextFormField(
+                            controller: dateOfBirthController,
+                            enabled: false,
+                            style: detailsTextStyle,
+                            decoration: InputDecoration(
+                              labelText: 'Date of birth',
+                              labelStyle: detailsTextStyle,
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 2, color: Colors.black)),
+                              border: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(width: 1, color: Colors.black)),
+                            ),
+                            validator: (value) {
+                              try {
+                                if (value == null || value.isEmpty) {
+                                  return '* Required';
+                                } else {
+                                  DateTime dob = DateTime.parse(value!);
+                                }
+                              } catch (e) {
+                                return 'Date format should be (YYYY-MM-DD)';
+                              }
+
+                              return null;
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            pickDate(context);
+                          },
+                          icon: Icon(
+                            Icons.calendar_month,
+                            color: textColorDark,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              controller: firstSOS,
+                              style: detailsTextStyle,
+                              decoration: InputDecoration(
+                                labelText: 'First SOS',
+                                labelStyle: detailsTextStyle,
+                                border: const OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: TextFormField(
+                              controller: secondSOS,
+                              style: detailsTextStyle,
+                              decoration: InputDecoration(
+                                labelText: 'Second SOS',
+                                labelStyle: detailsTextStyle,
+                                border: const OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      )),
+                  const SizedBox(height: 16),
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              controller: thirdSOS,
+                              style: detailsTextStyle,
+                              decoration: InputDecoration(
+                                labelText: 'Third SOS',
+                                labelStyle: detailsTextStyle,
+                                border: const OutlineInputBorder(),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green),
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                        const MedicalHistoryScreen()),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DetailsText(
+                                    text: "Medical History",
+                                    textColor: textColorDark,
+                                    alignment: TextAlign.start,
+                                    fSize: 10,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  )),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Flexible(
-                      child: DetailsText(
-                          text: "Gender: ${currentUserInfo.gender}",
-                          textColor: textColorDark,
-                          alignment: TextAlign.start),
-                    ),
-                    Flexible(
-                      child: DetailsText(
-                          text: "Blood Group: ${currentUserInfo.bloodGroup}",
-                          textColor: textColorDark,
-                          alignment: TextAlign.start),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 5),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                child: ValueListenableBuilder<bool>(
-                  valueListenable: activeSubmitButton,
-                  builder: (context, value, child) {
-                    return ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: themeColorDark),
-                      onPressed: (value)
-                          ? () async {
-                              if (formKey.currentState!.validate()) {
-                                activeSubmitButton.value = false;
-                                await updateProfile();
-                                activeSubmitButton.value = true;
-                              }
-                            }
-                          : null,
-                      child: (value)
-                          ? DetailsText(
-                              text: "Update",
-                              textColor: textColorDark,
-                              alignment: TextAlign.start)
-                          : DetailsText(
-                              text: "Loading...",
+                        ],
+                      )),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Flexible(
+                          child: DetailsText(
+                              text: "Gender: ${currentUserInfo.gender}",
                               textColor: textColorDark,
                               alignment: TextAlign.start),
-                    );
-                  },
-                ),
+                        ),
+                        Flexible(
+                          child: DetailsText(
+                              text: "Blood Group: ${currentUserInfo.bloodGroup}",
+                              textColor: textColorDark,
+                              alignment: TextAlign.start),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                    child: ValueListenableBuilder<bool>(
+                      valueListenable: activeSubmitButton,
+                      builder: (context, value, child) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: themeColorDark),
+                          onPressed: (value)
+                              ? () async {
+                                  if (formKey.currentState!.validate()) {
+                                    activeSubmitButton.value = false;
+                                    await updateProfile();
+                                    activeSubmitButton.value = true;
+                                  }
+                                }
+                              : null,
+                          child: (value)
+                              ? DetailsText(
+                                  text: "Update",
+                                  textColor: textColorDark,
+                                  alignment: TextAlign.start)
+                              : DetailsText(
+                                  text: "Loading...",
+                                  textColor: textColorDark,
+                                  alignment: TextAlign.start),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ],

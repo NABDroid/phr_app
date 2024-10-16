@@ -23,6 +23,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   DateTime? selectedDOB;
 
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    dateOfBirthController.dispose();
+    emailController.dispose();
+    contactNoController.dispose();
+    addressController.dispose();
+    passwordController.dispose();
+    reTypeController.dispose();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

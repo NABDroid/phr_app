@@ -5,6 +5,7 @@ import 'package:phr_app/Components/Global.dart';
 import '../Models/Ambulance.dart';
 import '../Models/DoctorInfo.dart';
 import '../Models/Hospital.dart';
+import '../Models/MedicalHistory.dart';
 
 class HospitalServices {
 
@@ -51,6 +52,36 @@ class HospitalServices {
     } else {
       throw Exception('Failed to load doctors');
     }
+  }
+
+  Future<bool> updatePatientHistory(List<MedicalHistory> medicalHistories) async {
+    final url = Uri.parse('$apiURL/api/Patient/updatePatientHistory');
+    try {
+      final body =
+      jsonEncode(medicalHistories.map((user) => user.toJson()).toList());
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        String message = jsonResponse['message'];
+        if (message == "updated") {
+          return true;
+        }
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+
+    return false;
   }
 
 }

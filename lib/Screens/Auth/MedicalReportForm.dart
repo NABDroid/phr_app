@@ -268,7 +268,7 @@ class _MedicalReportFormState extends State<MedicalReportForm> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.redAccent,
             textColor: Colors.white,
             fontSize: 16.0);
 

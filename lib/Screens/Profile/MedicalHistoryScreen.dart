@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:phr_app/Services/HospitalServices.dart';
 
 import '../../Components/Global.dart';
 import '../../Components/HeadingText.dart';
 import '../../Models/HistoryTitles.dart';
+import '../../Models/MedicalHistory.dart';
 import '../../Services/AuthServices.dart';
 
 class MedicalHistoryScreen extends StatefulWidget {
@@ -70,7 +73,7 @@ class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
                             ),
                             Flexible(
                                 child: DetailsText(
-                              text: "${titles[index].title}, ${titles[index].historyId}",
+                              text:titles[index].title,
                               textColor: textColorDark,
                               alignment: TextAlign.start,
                             ))
@@ -116,7 +119,35 @@ class _MedicalHistoryScreenState extends State<MedicalHistoryScreen> {
     );
   }
 
-  submitHistoryChange() {
+  submitHistoryChange() async {
+    HospitalServices hospitalServices = HospitalServices();
+
+    List<MedicalHistory> medicalHistories = [];
+    for (int i = 0; i < titles.length; i++) {
+      if (titles[i].historyId != null) {
+        MedicalHistory medicalHistory = MedicalHistory(
+            historyId: titles[i].historyId!,
+            userId: currentUserInfo.userId,
+            titleId: titles[i].titleId,
+            isTrue: titles[i].isChecked,
+            remarks: "Updated from profile",
+            isActive: true);
+        medicalHistories.add(medicalHistory);
+      }
+    }
+    bool isUpdated =
+        await hospitalServices.updatePatientHistory(medicalHistories);
+    if(isUpdated){
+      Fluttertoast.showToast(
+          msg: 'Updated',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
 
   }
 }
