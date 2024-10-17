@@ -15,8 +15,16 @@ class HospitalServices {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      List<dynamic> data = jsonData['data'];
-      return data.map((hospital) => Hospital.fromJson(hospital)).toList();
+      if(jsonData['data']!=null){
+        List<dynamic> data = jsonData['data'];
+        return data.map((hospital) => Hospital.fromJson(hospital)).toList();
+      } else{
+        List<Hospital> blankList = [];
+        return blankList;
+      }
+
+
+
     } else {
       throw Exception('Failed to load hospitals');
     }

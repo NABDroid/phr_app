@@ -119,7 +119,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
                                       BorderSide(width: 1, color: Colors.black)),
                               // hintStyle:
                             ),
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return '* Required';
@@ -135,6 +135,7 @@ class _ProfilePanelState extends State<ProfilePanel> {
                           child: TextFormField(
                             controller: emailController,
                             style: detailsTextStyle,
+                            enabled: false,
                             decoration: InputDecoration(
                               labelText: 'Email',
                               labelStyle: detailsTextStyle,
